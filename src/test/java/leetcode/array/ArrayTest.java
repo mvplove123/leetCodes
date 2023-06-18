@@ -54,6 +54,13 @@ public class ArrayTest {
         System.out.println(result);
     }
 
+    @Test  //53.最大子数组和
+    public void test53maxSubArray() {
+        int[] candidates = new int[]{2, 3, -6, 7};
+        int result = maxSubArray(candidates);
+        System.out.println(result);
+    }
+
     @Test
     public void test79exist() {
         char[][] board = {{'A', 'B', 'C'}, {'D', 'E', 'F'}, {'G', 'H', 'I'}};
@@ -71,7 +78,7 @@ public class ArrayTest {
     @Test //206.链表翻转
     public void test206reverseList() {
         ListNode node1 = new ListNode(2);
-        ListNode node = new ListNode(1,node1);
+        ListNode node = new ListNode(1, node1);
         ListNode result = reverseList(node);
         System.out.println(JacksonUtil.toString(result));
     }
@@ -140,6 +147,38 @@ public class ArrayTest {
             }
         }
         return dp[len - 1][sum + s];
+    }
+
+    /**
+     * 、53. 最大子数组和
+     *
+     * @param nums
+     * @return
+     */
+    public int maxSubArray(int[] nums) {
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        //先设置最小值
+        int result = Integer.MIN_VALUE;
+        //临时求和变量
+        int sum = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            //和累加
+            sum += nums[i];
+        }
+        //更新最小值
+        if (sum > result) {
+            result = sum;
+        }
+        //连续和为负--只会让我们的结果变小-不如更新遍历，求和为0
+        if (sum <= 0) {
+            sum = 0;
+        }
+
+        return result;
     }
 
 
@@ -212,12 +251,14 @@ public class ArrayTest {
     public class ListNode {
         int val;
         ListNode next;
+
         ListNode() {
         }
 
         ListNode(int val) {
             this.val = val;
         }
+
         ListNode(int val, ListNode next) {
             this.val = val;
             this.next = next;
@@ -230,7 +271,7 @@ public class ArrayTest {
 
         ListNode pre = null;
         ListNode node = head;
-        while(node!=null){
+        while (node != null) {
 
             ListNode nodeNext = node.next;
             node.next = pre;
