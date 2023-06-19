@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -36,6 +37,13 @@ public class ArrayTest {
         System.out.println("3. 无重复字符的最长子串:" + result);
     }
 
+
+    @Test //3. 3数之和
+    public void test15threeSum(){
+        int[] nums =new int []{-1,0,1,2,-1,-4};
+        List<List<Integer>>  result =  threeSum(nums);
+        System.out.println("3数之和"+JacksonUtil.toString(result));
+    }
 
     @Test
     public void test39CombinationSum() {
@@ -75,12 +83,30 @@ public class ArrayTest {
         System.out.println(result);
     }
 
+    @Test //128. 比较版本号
+    public void test165CompareVersion() {
+
+        String version1 = "1.2.01";
+        String version2 ="1.001";
+        int result = compareVersion(version1,version2);
+        System.out.println("128. 比较版本号:"+result);
+    }
+
     @Test //206.链表翻转
     public void test206reverseList() {
         ListNode node1 = new ListNode(2);
         ListNode node = new ListNode(1, node1);
         ListNode result = reverseList(node);
         System.out.println(JacksonUtil.toString(result));
+    }
+
+    @Test
+    public void test215findKthLargest() {
+
+        int[] nums = new int[]{1, 5, 3, 6, 7};
+        int result = findKthLargest(nums, 2);
+        System.out.println("test215findKthLargest:" + result);
+
     }
 
 
@@ -182,7 +208,75 @@ public class ArrayTest {
     }
 
 
-    public int[][] reconstructQueue(int[][] people) {
+    /**
+     * 215 数组中第K个最大元素
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int findKthLargest(int[] nums, int k) {
+
+        //边界判断
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        //定义优先队列（弹出的值都是最小的值）
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        for (int i = 0; i < nums.length; i++) {
+            queue.offer(nums[i]);
+            //如果队列长度大于k，就弹出最小的那一个，保证队列里只有k个元素
+            if (queue.size() > k) {
+                queue.poll();
+            }
+        }
+        //当前k长度的队列，弹出最小的那个就是第k大的值
+        return queue.poll();
+    }
+
+    /**
+     * 15 3数之和
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+
+        for(int i=0;i<nums.length-2;i++){
+
+            if(i>0&& nums[i] == nums[i-1]){
+                continue;
+            }
+
+            int low = i+1;
+            int high = nums.length-1;
+            int sum = 0- nums[i];
+
+            while(low<high){
+                if(nums[low]+nums[high] == sum){
+                    result.add(Arrays.asList(nums[i],nums[low],nums[high]));
+                    while (low<high && nums[low]  == nums[low+1]){
+                        low++;
+                    }
+                    while(low<high && nums[high] == nums[high-1]){
+                        high--;
+                    }
+                    low++;
+                    high--;
+                }else if(nums[low]+nums[high] > sum){
+                    high--;
+                }else {
+                    low++;
+                }
+            }
+        }
+        return result;
+    }
+
+        public int[][] reconstructQueue(int[][] people) {
         Arrays.sort(people, (a, b) -> {
             // 如果身高相同，k就按从小到大排序 [7,0],[7,1]
             if (a[0] == b[0]) {
@@ -224,7 +318,32 @@ public class ArrayTest {
 
     }
 
-    public int[] topKFrequent(int[] nums, int k) {
+    public int compareVersion(String version1, String version2) {
+
+        String[] ss1 = version1.split("\\.");
+        String[] ss2 = version2.split("\\.");
+
+        int m = ss1.length;
+        int n = ss2.length;
+        int i=0,j=0;
+
+        while(i<m || j<n){
+            int a=0,b=0;
+            if(i<n){
+                a = Integer.parseInt(ss1[i++]);
+            }
+            if(j<m){
+                b = Integer.parseInt(ss2[j++]);
+            }
+            if(a!=b){
+                return a>b? 1:-1;
+            }
+
+        }
+        return  0 ;
+    }
+
+        public int[] topKFrequent(int[] nums, int k) {
 
         Map<Integer, Integer> frequentCount = new TreeMap<>();
         //频次统计
