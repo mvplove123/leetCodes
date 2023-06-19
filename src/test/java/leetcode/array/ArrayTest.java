@@ -75,6 +75,15 @@ public class ArrayTest {
         System.out.println(result);
     }
 
+    @Test //128. 比较版本号
+    public void test165CompareVersion() {
+
+        String version1 = "1.2.01";
+        String version2 ="1.001";
+        int result = compareVersion(version1,version2);
+        System.out.println("128. 比较版本号:"+result);
+    }
+
     @Test //206.链表翻转
     public void test206reverseList() {
         ListNode node1 = new ListNode(2);
@@ -224,7 +233,32 @@ public class ArrayTest {
 
     }
 
-    public int[] topKFrequent(int[] nums, int k) {
+    public int compareVersion(String version1, String version2) {
+
+        String[] ss1 = version1.split("\\.");
+        String[] ss2 = version2.split("\\.");
+
+        int m = ss1.length;
+        int n = ss2.length;
+        int i=0,j=0;
+
+        while(i<m || j<n){
+            int a=0,b=0;
+            if(i<n){
+                a = Integer.parseInt(ss1[i++]);
+            }
+            if(j<m){
+                b = Integer.parseInt(ss2[j++]);
+            }
+            if(a!=b){
+                return a>b? 1:-1;
+            }
+
+        }
+        return  0 ;
+    }
+
+        public int[] topKFrequent(int[] nums, int k) {
 
         Map<Integer, Integer> frequentCount = new TreeMap<>();
         //频次统计
