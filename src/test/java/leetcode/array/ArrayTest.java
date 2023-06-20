@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeMap;
 
 public class ArrayTest {
@@ -43,6 +44,21 @@ public class ArrayTest {
         int[] nums =new int []{-1,0,1,2,-1,-4};
         List<List<Integer>>  result =  threeSum(nums);
         System.out.println("3数之和"+JacksonUtil.toString(result));
+    }
+
+
+    @Test //5.最长回文子串
+    public void test5longestPalindromem(){
+        String s = "bacbaabcd";
+        String result =  longestPalindrome(s);
+        System.out.println("5.最长回文子串"+result);
+    }
+
+    @Test //20 有效的括号
+    public void test20IsValid(){
+        String s = "()[";
+        boolean result  = isValid(s);
+        System.out.println("test20IsValid:"+ result);
     }
 
     @Test
@@ -129,7 +145,41 @@ public class ArrayTest {
     }
 
 
-    //无重复字符的最长子串
+    /**
+     * 5. 最长回文串
+     * @param s
+     * @return
+     */
+    public String longestPalindrome(String s) {
+
+        String res = "";
+        for(int i=0;i<s.length();i++){
+             res = helper(res,s,i,i);
+            res = helper(res,s,i,i+1);
+        }
+        return res;
+
+    }
+    private String helper(String res,String s, int left, int right){
+
+        while(left>=0 && right<s.length() && s.charAt(left) == s.charAt(right)){
+            left -- ;
+            right++ ;
+        }
+
+        //提取字符串
+        String cur = s.substring(left+1,right);
+        if(cur.length()>res.length()){
+            res = cur;
+        }
+
+        return res;
+    }
+
+
+
+
+        //无重复字符的最长子串
     public int lengthOfLongestSubstring(String s) {
 
         int result = 0;
@@ -293,8 +343,28 @@ public class ArrayTest {
         return queue.toArray(new int[people.length][]);
     }
 
+    // 20 有效的括号
+    public boolean isValid(String s) {
 
-    @Test
+        Stack<Character> stack = new Stack<>();
+        for(char c: s.toCharArray()){
+            if(c == '('){
+                stack.push(')');
+            }else if(c == '{'){
+                stack.push('}');
+            }else if(c == '['){
+                stack.push(']');
+            }else if(stack.isEmpty() || stack.pop() != c){
+                return false;
+            }
+        }
+        return stack.isEmpty();
+
+
+    }
+
+
+        @Test
     public void testTopKFrequent() {
 
         int[] nums = new int[]{1, 1, 2, 3, 3};
