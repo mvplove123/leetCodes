@@ -244,14 +244,15 @@ public class ArrayTest {
         for (int i = 0; i < nums.length; i++) {
             //和累加
             sum += nums[i];
-        }
-        //更新最小值
-        if (sum > result) {
-            result = sum;
-        }
-        //连续和为负--只会让我们的结果变小-不如更新遍历，求和为0
-        if (sum <= 0) {
-            sum = 0;
+
+            //更新最小值
+            if (sum > result) {
+                result = sum;
+            }
+            //连续和为负--只会让我们的结果变小-不如更新遍历，求和为0
+            if (sum <= 0) {
+                sum = 0;
+            }
         }
 
         return result;
